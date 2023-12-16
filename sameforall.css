@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+h1, legend {
+    font-family: Georgia, serif;
+    color: #966FD6; 
+}
+h1 {
+    font-size: 32px;
+}
+legend {
+    font-size: 24px;
+}
+button, button[type="submit"] {
+    background-color: #966FD6;
+    color: white;
+}
+button:hover, button[type="submit"]:hover {
+    background-color: #714bad;
+}
+nav {
+    background-color: black;
+    overflow: hidden;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+nav ul li {
+    display: inline;
+}
+nav a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.active {
+    text-decoration: underline;
+}
+footer {
+    position: fixed;
+    background-color: white;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+    margin-top: 20px;
+}
