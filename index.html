@@ -112,7 +112,7 @@
                 const lon = position.coords.longitude;
                 updateLocation(lat, lon);
             }, function(error) {
-                document.getElementById('location').textContent = 'Unable to retrieve your location';
+                document.getElementById('location').textContent = 'Your Location: Permission denied.';
             });
         } else {
             document.getElementById('location').textContent = 'Geolocation is not supported by your browser';
