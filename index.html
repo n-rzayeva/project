@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Experience Tracker</title>
+    <link rel="stylesheet" href="sameforall.css"> 
+    <style>
+        body {
+            text-align: center;
+        }
+        .pagecenter {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; 
+        }
+        h1 {
+            font-size: 3vw; 
+        }
+        .large-text {
+            font-size: 2vw;
+        }
+        #totalDistance {
+            font-weight: bold;
+        }
+        button {
+            font-size: 1.5vw; 
+            padding: 0.75vw 1.5vw; 
+            border: none;  
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }
+        #backgroundImage {
+            align-self: flex-start; 
+            order: 2; 
+            width: 600px; 
+            margin-top: auto; 
+        }
+        @media screen and (max-width: 600px) {
+            #backgroundImage {
+                width: 300px;
+            }
+            button {
+                font-size: 3vw; 
+                padding: 1.5vw 2.5vw; 
+            }
+            h1 {
+                font-size: 6vw;
+            }
+            .large-text {
+                font-size: 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="index.html" id="navIndex">Home</a></li>
+            <li><a href="experiences.html" id="navExperiences">View Experiences</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Welcome to the Driving Experience Tracker</h1>
+        <div class="pagecenter">
+            <p id="location" class="large-text"></p>
+            <p id="clock" class="large-text"></p>
+            <p id="totalDistance" class="large-text"></p>
+            <button id="enterExperienceBtn">Enter Driving Experience</button>
+            <img src="cartoon-car-transparent-background-4.png" alt="Background" id="backgroundImage" />
+        </div>
+    </main>
+    <footer>
+        <p>Made by <a href="https://www.linkedin.com/in/nuranə-rzayeva-553ab724b">Rzayeva Nurana</a></p>
+    </footer> 
+
+    <script>
+        document.getElementById('navIndex').classList.add('active');
+
+        function calculateTotalDistance() {
+            let drivingExperiences = JSON.parse(localStorage.getItem('drivingExperiences')) || [];
+            let totalDistance = drivingExperiences.reduce((sum, exp) => sum + parseFloat(exp.km), 0);
+            document.getElementById('totalDistance').textContent = `Total Distance Driven: ${totalDistance} km`;
+        }
+        calculateTotalDistance();
+
+        function updateClock() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('clock').textContent = now.toLocaleTimeString([], options);
+        }
+        setInterval(updateClock, 1000);  // to call the timer after every 1000ms (1s)
+
+        function updateLocation(lat, lon) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    const readableLocation = data.address.city + ', ' + data.address.country;
+                    document.getElementById('location').textContent = `Your Location: ${lat}, ${lon} (${readableLocation})`;
+                })
+                .catch(() => {
+                    document.getElementById('location').textContent = `Your Location: ${lat}, ${lon} (Readable location not available)`;
+                });
+        }
+
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                updateLocation(lat, lon);
+            }, function(error) {
+                document.getElementById('location').textContent = 'Unable to retrieve your location';
+            });
+        } else {
+            document.getElementById('location').textContent = 'Geolocation is not supported by your browser';
+        }
+
+        document.getElementById('enterExperienceBtn').addEventListener('click', function() {
+            window.location.href = 'form.html';
+        });
+    </script>
+</body>
+</html>
